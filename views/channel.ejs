@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        background-color: #121212;
+        color: #ffffff;
+      }
+
+      h2,
+      h3 {
+        text-align: center;
+        margin: 0.5em 0;
+      }
+
+      hr {
+        width: 80%;
+        margin: 1em auto;
+        border-color: #ffffff67;
+      }
+
+      form {
+        width: 80%;
+        margin-bottom: 2em;
+      }
+
+      input[type="text"],
+      input[type="submit"] {
+        width: 100%;
+        padding: 0.5em;
+        font-size: 1em;
+        margin-bottom: 1em;
+        border: none;
+        border-radius: 5px;
+        background-color: #333333;
+        color: #ffffff;
+      }
+
+      input[type="submit"] {
+        padding: 0.75em 1.5em;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        background-color: #007bff;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+
+      span {
+        font-weight: bolder;
+        color: #ffffff84;
+      }
+
+      p {
+        margin: 0.5em 0;
+        padding: 1em;
+        border-radius: 5px;
+        background-color: #1f1f1f;
+        color: #ffffff;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 0.5em;
+        color: #b3b3b3;
+      }
+
+      li::before {
+        content: "•";
+        color: #007bff;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+      }
+
+      @media (max-width: 767px) {
+        h2,
+        h3,
+        p,
+        input[type="text"],
+        input[type="submit"] {
+          width: 90%;
+        }
+      }
+    </style>
+
+    <title>Channel Scraper</title>
+  </head>
+  <body>
+    <h2>
+      Welcome! To get started with scraping data from a YouTube channel, please
+      enter the YouTube channel handle.
+    </h2>
+    <hr />
+    <h3>
+      You can find the handle by visiting the channel's page on YouTube. It
+      usually follows the format https://www.youtube.com/@channelname.
+    </h3>
+    <h3>Just copy and paste the part after /@ (e.g., channelname).</h3>
+    <form action="/channel-scraper" method="post">
+      <input type="text" name="cname" placeholder="Channel name..." required />
+      <input type="submit" value="Fetch Details" />
+    </form>
+
+    <% if(locals.data) { %>
+    <hr />
+    <p><span>Title: </span><%= data.title %></p>
+    <p><span>Description: </span><%= data.description %></p>
+    <p><span>Subscribers: </span><%= data.stats.subscribersText %></p>
+    <p><span>Videos: </span><%= data.stats.videosText %></p>
+    <p><span>Views: </span><%= data.stats.views %> views</p>
+    <p><span>Joining date: </span> <%= data.joinedDateText %></p>
+    <p><span>Channel ID: </span> <%= data.channelId %></p>
+    <% if(data.country != null) { %>
+    <p><span>Country: </span><%= data.country %></p>
+    <% } %> <% if(data.hasBusinessEmail != null) { %>
+    <p><span>Business mail holder: </span><%= data.hasBusinessEmail %></p>
+    <% } %>
+    <p><span>Keywords:</span></p>
+    <ul>
+      <% for(var i = 0; i < data.keywords.length; i++){ %>
+      <li><%= data.keywords[i] %></li>
+      <% } %>
+    </ul>
+    <% } %>
+  </body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        background-color: #121212;
+        color: #ffffff;
+      }
+
+      h2,
+      h3 {
+        text-align: center;
+        margin: 0.5em 0;
+      }
+
+      hr {
+        width: 80%;
+        margin: 1em auto;
+        border-color: #ffffff67;
+      }
+
+      form {
+        width: 80%;
+        margin-bottom: 2em;
+      }
+
+      input[type="text"],
+      input[type="submit"] {
+        width: 100%;
+        padding: 0.5em;
+        font-size: 1em;
+        margin-bottom: 1em;
+        border: none;
+        border-radius: 5px;
+        background-color: #333333;
+        color: #ffffff;
+      }
+
+      input[type="submit"] {
+        padding: 0.75em 1.5em;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        background-color: #007bff;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+
+      span {
+        font-weight: bolder;
+        color: #ffffff84;
+      }
+
+      p {
+        margin: 0.5em 0;
+        padding: 1em;
+        border-radius: 5px;
+        background-color: #1f1f1f;
+        color: #ffffff;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 0.5em;
+        color: #b3b3b3;
+      }
+
+      li::before {
+        content: "•";
+        color: #007bff;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+      }
+
+      @media (max-width: 767px) {
+        h2,
+        h3,
+        p,
+        input[type="text"],
+        input[type="submit"] {
+          width: 90%;
+        }
+      }
+    </style>
+    <title>Video Scraper</title>
+  </head>
+  <body>
+    <h2>
+      Welcome! To get started with scraping data from a YouTube video, please
+      enter the unique YouTube video URL.
+    </h2>
+    <hr />
+    <h3>
+      You can find the video URL by visiting the video's page on YouTube. It
+      usually follows the format https://www.youtube.com/watch?v=VIDEO_ID
+    </h3>
+    <h3>
+      Just copy and paste the entire URL (e.g.,
+      https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+    </h3>
+    <form action="/video-scraper" method="post">
+      <input type="text" name="vname" placeholder="Video URL..." required />
+      <input type="submit" value="Fetch Details" />
+    </form>
+
+    <% if(locals.data) { %>
+    <hr />
+    <p><span>Creator: </span><%= data.author.title %></p>
+    <p><span>Channel ID: </span><%= data.author.channelId %></p>
+    <p><span>Subscribers: </span><%= data.author.stats.subscribersText %></p>
+    <p><span>Title: </span><%= data.title %></p>
+    <p><span>Description: </span></p>
+    <p><%= data.description %></p>
+    <% var date = data.publishedDate.slice(0, 10) %>
+    <p>Publish date: <%= date %></p>
+    <% var duration = data.lengthSeconds %> <% var hr = (duration / 3600) > 1 ?
+    (duration / 3600) : 0%> <%var min = ((duration % 3600) / 60) > 1? ((duration
+    % 3600) / 60) : 0 %> <% var sec = (duration % 60) %> <% var time =
+    `${Math.round(hr)} hrs ${Math.round(min)} mins ${Math.round(sec)} secs` %>
+    <p><span>Duration: </span><%= time %></p>
+    <p><span>Views: </span><%= data.stats.views %> views</p>
+    <p><span>Likes: </span><%= data.stats.likes %> likes</p>
+    <p><span>Comments: </span><%= data.stats.comments %> comments</p>
+    <p><span>Keywords: </span></p>
+    <ul>
+      <% for(var i = 0; i < data.keywords.length; i++){ %>
+      <li><%= data.keywords[i] %></li>
+      <% } %>
+    </ul>
+    <p><span>Category: </span><%= data.category %></p>
+    <% } %>
+  </body>
+</html>
