@@ -136,6 +136,8 @@
       <li><%= data.keywords[i] %></li>
       <% } %>
     </ul>
+    <% } %> <% if(locals.error) {%>
+    <p>ERROR: <%= error.message %></p>
     <% } %>
   </body>
 </html>
