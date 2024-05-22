@@ -28,38 +28,45 @@ app.get("/channel-scraper", (req, res) => {
 });
 
 app.post("/channel-scraper", async (req, res) => {
-  var channel = req.body.cname;
-  var response = await axios.get(rapidapiURL1, {
-    params: {
-      id: youtubeURL + channel,
-      h1: "en",
-      g1: "US",
-    },
-    headers: {
-      "X-RapidAPI-Key": "300bd0dde6mshac26486321139dap106030jsna29950716ce2",
-      "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
-    },
-  });
-  var result = response.data;
-  res.render("channel.ejs", { data: result });
+  try {
+    var channel = req.body.cname;
+    var response = await axios.get(rapidapiURL1, {
+      params: {
+        id: youtubeURL + channel,
+        h1: "en",
+        g1: "US",
+      },
+      headers: {
+        "X-RapidAPI-Key": "300bd0dde6mshac26486321139dap106030jsna29950716ce2",
+        "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
+      },
+    });
+    var result = response.data;
+    res.render("channel.ejs", { data: result });
+  } catch (error) {
+    res.render("channel.ejs", { error: error });
+  }
 });
 
 app.post("/video-scraper", async (req, res) => {
-  var video = req.body.vname;
-  var response = await axios.get(rapidapiURL2, {
-    params: {
-      id: video,
-      h1: "en",
-      g1: "US",
-    },
-    headers: {
-      "X-RapidAPI-Key": "300bd0dde6mshac26486321139dap106030jsna29950716ce2",
-      "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
-    },
-  });
-  var result = response.data;
-  console.log(result);
-  res.render("video.ejs", { data: result });
+  try {
+    var video = req.body.vname;
+    var response = await axios.get(rapidapiURL2, {
+      params: {
+        id: video,
+        h1: "en",
+        g1: "US",
+      },
+      headers: {
+        "X-RapidAPI-Key": "300bd0dde6mshac26486321139dap106030jsna29950716ce2",
+        "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
+      },
+    });
+    var result = response.data;
+    res.render("video.ejs", { data: result });
+  } catch (error) {
+    res.render("channel.ejs", { error: error });
+  }
 });
 
 app.get("/video-scraper", (req, res) => {
