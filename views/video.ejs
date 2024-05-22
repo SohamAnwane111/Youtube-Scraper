@@ -143,6 +143,8 @@
       <% } %>
     </ul>
     <p><span>Category: </span><%= data.category %></p>
+    <% } %> <% if(locals.error) {%>
+    <p>ERROR: <%= error.message %></p>
     <% } %>
   </body>
 </html>
